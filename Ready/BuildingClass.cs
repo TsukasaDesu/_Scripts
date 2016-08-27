@@ -264,8 +264,6 @@ public class SlantingShotBuilding:BuildingClass
 
 public class StopBuilding:BuildingClass
 {
-    GameObject wall_obj;
-    bool flg;
      
     public StopBuilding()
     {
@@ -273,44 +271,36 @@ public class StopBuilding:BuildingClass
         m_action_rate[0] = 6.84f;
         m_upgrade_cost = 50;
         m_delta_cnt = 0;
-        wall_obj = Resources.Load<GameObject>("Building/Wall");
         
     }
 
     public override void ability(GameObject root)
     {
-        //if (!flg) return;
-        if (GameMasterBehaviour.interval_wall > 2 && GameMasterBehaviour.interval_wall < 3f)
+        if (GameMasterBehaviour.interval_wall > 3 && GameMasterBehaviour.interval_wall < 4f)
         {
-            if (root.transform.GetChild(0).transform.position.y <= 0) return;
-               for (int i = 0; i < 4; i++)
-            {
-                root.transform.GetChild(i).Translate(0, -2f, 0);
-            }
+            Debug.Log(root.transform.GetChild(0).position.y);
+            if (root.transform.GetChild(0).localPosition.y > 0)
+                for (int i = 0; i < 4; i++)
+                    root.transform.GetChild(i).Translate(root.transform.up*-2,Space.World);
+            else
+                for (int i = 0; i <4;i++)
+                    root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 0, root.transform.GetChild(i).localPosition.z);
+
         }
             if (GameMasterBehaviour.interval_wall >= m_action_rate[0])
         {
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    GameObject clone1 = Instantiate(wall_obj, root.transform.position + new Vector3((i < 1) ? 7.5f : -7.5f, 0, 0), Quaternion.identity) as GameObject;
-            //    GameObject clone2 = Instantiate(wall_obj, root.transform.position + new Vector3(0, 0, (i < 1) ? 7.5f : -7.5f), Quaternion.identity) as GameObject;
-            //    Destroy(clone1, 4);
-            //    Destroy(clone2, 3);
-            //}
-            if (root.transform.GetChild(0).transform.position.y >= 1) return;
-                for (int i= 0; i < 4; i++)
-            {
-                root.transform.GetChild(i).Translate(0, 1.6f, 0);
-            }
+            if (root.transform.GetChild(0).localPosition.y < 1)
+                for (int i = 0; i < 4; i++)
+                    root.transform.GetChild(i).Translate(root.transform.up*2,Space.World);
+            else
+                for (int i = 0; i < 4;i++)
+                    root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 1, root.transform.GetChild(i).localPosition.z);
         }
     }
 
     public override void trigger_enter(Collider col)
     {
-        //if(col.gameObject.name == "StopBuilding(Clone)")
-        //{
-        //    flg = true;
-        //}
+
     }
 
     public override void upgrade()
