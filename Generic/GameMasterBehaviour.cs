@@ -7,19 +7,23 @@ public class GameMasterBehaviour : MonoBehaviour {
     public static int now_enmey_num;
     public static bool NextFlg;
     public static float interval_wall;
+    public static int wave;
 
     public GameObject ApplyPoint;
-    public GameObject Enemy;
     public GameObject ReadyPanel;
     public Text EnemyNumText;
 
     int[] max_enemy_num = new int[10];
     int ready_enemy_num;
-    int wave;
+    GameObject[] Enemy = new GameObject[3];
     float apply_cnt;
 
     void Awake()
     {
+        Enemy[0] = Resources.Load<GameObject>("Enemy/enemy_small");
+        Enemy[1] = Resources.Load<GameObject>("Enemy/enemy_normal");
+        Enemy[2] = Resources.Load<GameObject>("Enemy/enemy_big");
+
         wave = 0;
         max_enemy_num[0] = 15;
         max_enemy_num[1] = 20;
@@ -57,7 +61,7 @@ public class GameMasterBehaviour : MonoBehaviour {
             {
                 ready_enemy_num--;
                 now_enmey_num++;
-                Instantiate(Enemy, ApplyPoint.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)), Quaternion.identity);
+                Instantiate(Enemy[Random.Range(0,Enemy.Length)], ApplyPoint.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)), Quaternion.identity);
                 apply_cnt = 0;
             }
         }
