@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BuildingBehaviour : MonoBehaviour {
 
-    public enum Builiding {Money,AutoGun,SlantingShot,Stop,SlantingBomb};
+    public enum Builiding {Money,AutoGun,SlantingShot,Stop,SlantingBomb,ResponceShot};
     public Builiding building;
 
 
@@ -28,8 +28,12 @@ public class BuildingBehaviour : MonoBehaviour {
             case Builiding.SlantingBomb:
                 building_class = new SlantingBombBuilding();
                 break;
+            case Builiding.ResponceShot:
+                building_class = new ResponceShotBuilding();
+                break;
         }
-        
+
+        building_class.Init(gameObject);
 	
 	}
 	
@@ -41,7 +45,7 @@ public class BuildingBehaviour : MonoBehaviour {
         //        build.ability();
         //        break;
         //}
-        building_class.ability(gameObject);
+        building_class.ability();
 	}
 
     void OnTriggerEnter(Collider col)
