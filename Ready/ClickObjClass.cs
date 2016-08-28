@@ -121,13 +121,13 @@ public class BuildSlatingShot:ClickObjClass
     }
 }
 
-public class BuildingStop:ClickObjClass
+public class BuildStop:ClickObjClass
 {
-    public BuildingStop()
+    public BuildStop()
     {
         m_title = "壁召喚";
         m_cost = 30;
-        m_explain = "8秒毎に弾しか通れない２秒間で消える壁を召喚する";
+        m_explain = "7秒毎に弾しか通れない２秒間で消える壁を召喚する";
         m_building = Resources.Load<GameObject>("Building/StopBuilding");
         m_height = 6;
     }
@@ -140,3 +140,20 @@ public class BuildingStop:ClickObjClass
     }
 }
 
+public class BuildSlantingBomb:ClickObjClass
+{
+    public BuildSlantingBomb()
+    {
+        m_title = "斜め爆弾";
+        m_cost = 30;
+        m_explain = "7秒毎に斜め4方向に爆弾を発射する";
+        m_building = Resources.Load<GameObject>("Building/SlantingBombBuilding");
+        m_height = 4;
+    }
+
+    public override void Clicked()
+    {
+        base.Clicked();
+        m_cost = m_cost + 30;
+    }
+}
