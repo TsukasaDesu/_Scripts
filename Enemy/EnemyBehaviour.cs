@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class EnemyBehaviour : MonoBehaviour,IRecieveMessage {
         
-    public enum Type { CubeMan};
+    public enum Type { Normal,Big,Small};
     public Type type;
     public bool moveflg;
-    EnemyClass enemyclass;
+    public EnemyClass enemyclass;
     float cnt;
     GameObject hp_gage;
 
@@ -16,8 +16,14 @@ public class EnemyBehaviour : MonoBehaviour,IRecieveMessage {
 	void Start () {
         switch(type)
         {
-            case Type.CubeMan:
-                enemyclass = new CubeMan();
+            case Type.Normal:
+                enemyclass = new Normal();
+                break;
+            case Type.Big:
+                enemyclass = new Big();
+                break;
+            case Type.Small:
+                enemyclass = new Small();
                 break;
         }
 
