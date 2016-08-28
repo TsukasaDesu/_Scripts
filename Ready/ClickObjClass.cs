@@ -117,7 +117,7 @@ public class BuildSlatingShot:ClickObjClass
     public override void Clicked()
     {
         base.Clicked();
-        m_cost += m_cost * 20;
+        m_cost = m_cost + 20;
     }
 }
 
@@ -162,9 +162,9 @@ public class BuildResponceShot:ClickObjClass
 {
     public BuildResponceShot()
     {
-        m_title = "反応撃ち";
+        m_title = "反応爆弾";
         m_cost = 50;
-        m_explain = "これに弾が当たるとランダムな方向に新たな弾が出る";
+        m_explain = "これに弾が当たるとランダムな方向に爆弾が出る";
         m_building = Resources.Load<GameObject>("Building/ResponceShotBuilding");
         m_height = 3;
     }
@@ -172,6 +172,6 @@ public class BuildResponceShot:ClickObjClass
     public override void Clicked()
     {
         base.Clicked();
-        m_cost = m_cost + 30*m_buy_cnt;
+        m_cost = m_cost + 50*m_buy_cnt;
     }
 }

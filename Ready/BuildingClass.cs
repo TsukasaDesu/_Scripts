@@ -400,7 +400,7 @@ public class ResponceShotBuilding:BuildingClass
         m_name = "反応撃ち";
         m_ability_power[0] = 20;
         m_upgrade_cost = 50;
-        bullet_src = Resources.Load<GameObject>("Bullet/SlantingBullet");
+        bullet_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
         rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
     }
 
@@ -424,10 +424,9 @@ public class ResponceShotBuilding:BuildingClass
             for (int i = 0; i < 1 + m_level; i++)
             {
                 float rand = Random.Range(0, 360);
-                GameObject clone = Instantiate(bullet_src, new Vector3(m_root.transform.position.x,2,m_root.transform.position.z) + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 7 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 7, Quaternion.identity) as GameObject;
-                clone.tag = "Untagged";
-                clone.GetComponent<SlantingBulletBehaviour>().power = m_ability_power[0];
-                clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 30 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 30;
+                GameObject clone = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 2+m_root.transform.up*7, Quaternion.identity) as GameObject;
+                clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
+                clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * Random.Range(10,30) + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * Random.Range(10,30)+m_root.transform.up*Random.Range(10,30);
             }
         }
     }
