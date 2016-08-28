@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public abstract class BuildingClass : MonoBehaviour
 {
 
-
+    public GameObject m_root;
     public float m_delta_cnt;
     public int m_level;//建物のレベル
     public int m_upgrade_cost;
@@ -34,7 +34,12 @@ public abstract class BuildingClass : MonoBehaviour
         m_upgrade_text = new List<string>();
     }
 
-    public virtual void ability(GameObject root)
+    public void Init(GameObject root)
+    {
+        m_root = root;
+    }
+
+    public virtual void ability()
     {
 
     }
@@ -48,7 +53,6 @@ public abstract class BuildingClass : MonoBehaviour
     {
 
     }
-
 
     public virtual void upgrade()
     {
@@ -68,7 +72,7 @@ public class MoneyBuilding : BuildingClass
         m_upgrade_text = new List<string>();
     }
 
-    public override void ability(GameObject root)
+    public override void ability()
     {
         m_delta_cnt += Time.deltaTime;
 
@@ -127,15 +131,15 @@ public class AutoGunBuilding : BuildingClass
         m_upgrade_text = new List<string>();
     }
 
-    public override void ability(GameObject root)
+    public override void ability()
     {
         nearEnemys = nearEnemys.Where(gmObj => gmObj != null).ToList();
 
-        nearestEnemy = nearEnemys.Count() < 1 ? null : nearEnemys.OrderBy<GameObject, float>(gmObj => Vector3.Distance(gmObj.transform.position, root.transform.position)).First();
+        nearestEnemy = nearEnemys.Count() < 1 ? null : nearEnemys.OrderBy<GameObject, float>(gmObj => Vector3.Distance(gmObj.transform.position, m_root.transform.position)).First();
 
         if (nearestEnemy != null)
         {
-            root.transform.GetChild(1).LookAt(nearestEnemy.transform.position);
+            m_root.transform.GetChild(1).LookAt(nearestEnemy.transform.position);
             m_delta_cnt += Time.deltaTime;
             if (m_delta_cnt > m_action_rate[0])
             {
@@ -144,7 +148,7 @@ public class AutoGunBuilding : BuildingClass
                            eventData: null,
                            functor: (recievetarget, y) => recievetarget.OnRecieve(m_ability_power[0])
                            );
-                GameObject clone = Instantiate(hiteffect, nearestEnemy.transform.position - root.gameObject.transform.forward, Quaternion.Euler(root.transform.forward)) as GameObject;
+                GameObject clone = Instantiate(hiteffect, nearestEnemy.transform.position - m_root.gameObject.transform.forward, Quaternion.Euler(m_root.transform.forward)) as GameObject;
                 Destroy(clone, 2);
                 m_delta_cnt = 0;
             }
@@ -215,18 +219,18 @@ public class SlantingShotBuilding : BuildingClass
         cnt = 0;
     }
 
-    public override void ability(GameObject root)
+    public override void ability()
     {
-        root.transform.GetChild(0).Rotate(0, m_level * 5 + 1, 0);
+        m_root.transform.GetChild(0).Rotate(0, m_level * 5 + 1, 0);
         m_delta_cnt += Time.deltaTime;
         if (m_delta_cnt > m_action_rate[0])
         {
             for (int i = 0; i < m_level + 1; i++)
             {
-                GameObject bul = Instantiate(bullet_src, root.transform.position + root.transform.right * Mathf.Sin(Mathf.Deg2Rad * i * 90) * 2 + root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * i * 90) * 2, Quaternion.identity) as GameObject;
+                GameObject bul = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * i * 90) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * i * 90) * 2, Quaternion.identity) as GameObject;
                 bul.GetComponent<SlantingBulletBehaviour>().power = m_ability_power[0];
-                bul.transform.parent = root.transform;
-                bul.GetComponent<Rigidbody>().velocity = root.transform.right * Mathf.Sin(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + root.transform.up * -10;
+                bul.transform.parent = m_root.transform;
+                bul.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + m_root.transform.up * -10;
                 cnt++;
             }
             m_delta_cnt = 0;
@@ -275,26 +279,26 @@ public class StopBuilding : BuildingClass
 
     }
 
-    public override void ability(GameObject root)
+    public override void ability()
     {
         if (GameMasterBehaviour.interval_wall > 3 && GameMasterBehaviour.interval_wall < 4f)
         {
-            if (root.transform.GetChild(0).localPosition.y > 0)
+            if (m_root.transform.GetChild(0).localPosition.y > 0)
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).Translate(root.transform.up * -2, Space.World);
+                    m_root.transform.GetChild(i).Translate(m_root.transform.up * -2, Space.World);
             else
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 0, root.transform.GetChild(i).localPosition.z);
+                    m_root.transform.GetChild(i).localPosition = new Vector3(m_root.transform.GetChild(i).localPosition.x, 0, m_root.transform.GetChild(i).localPosition.z);
 
         }
         if (GameMasterBehaviour.interval_wall >= m_action_rate[0])
         {
-            if (root.transform.GetChild(0).localPosition.y < 1)
+            if (m_root.transform.GetChild(0).localPosition.y < 1)
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).Translate(root.transform.up * 2, Space.World);
+                    m_root.transform.GetChild(i).Translate(m_root.transform.up * 2, Space.World);
             else
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 1, root.transform.GetChild(i).localPosition.z);
+                    m_root.transform.GetChild(i).localPosition = new Vector3(m_root.transform.GetChild(i).localPosition.x, 1, m_root.transform.GetChild(i).localPosition.z);
         }
     }
 
@@ -340,15 +344,15 @@ public class SlantingBombBuilding : BuildingClass
         shot_flg = false;
     }
 
-    public override void ability(GameObject root)
+    public override void ability()
     {
         if (GameMasterBehaviour.interval_wall > 0f && GameMasterBehaviour.interval_wall < 1f)
         {
             if (shot_flg) return;
             for (int i = 0; i < 4; i++)
             {
-                GameObject clone = Instantiate(bomb_src, root.transform.position + root.transform.forward * ((i < 2) ? -2 : 2) + root.transform.right * ((i % 2 == 0) ? -2 : 2) + root.transform.up * 8, Quaternion.identity) as GameObject;
-                clone.GetComponent<Rigidbody>().velocity = root.transform.forward * ((i < 2) ? -7.8f : 7.8f) + root.transform.right * ((i % 2 == 0) ? -7.8f : 7.8f)+root.transform.up*15f;
+                GameObject clone = Instantiate(bomb_src, m_root.transform.position + m_root.transform.forward * ((i < 2) ? -2 : 2) + m_root.transform.right * ((i % 2 == 0) ? -2 : 2) + m_root.transform.up * 8, Quaternion.identity) as GameObject;
+                clone.GetComponent<Rigidbody>().velocity = m_root.transform.forward * ((i < 2) ? -7.8f : 7.8f) + m_root.transform.right * ((i % 2 == 0) ? -7.8f : 7.8f)+m_root.transform.up*15f;
                 clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
             }
             shot_flg = true;
@@ -385,4 +389,72 @@ public class SlantingBombBuilding : BuildingClass
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
         m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
     }
+}
+
+public class ResponceShotBuilding:BuildingClass
+{
+    GameObject bullet_src;
+    Vector3 rotate_rand;
+    public ResponceShotBuilding()
+    {
+        m_name = "反応撃ち";
+        m_ability_power[0] = 20;
+        m_upgrade_cost = 50;
+        bullet_src = Resources.Load<GameObject>("Bullet/SlantingBullet");
+        rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
+    }
+
+    public override void ability()
+    {
+        m_delta_cnt += Time.deltaTime;
+        if (m_delta_cnt > 4)
+        {
+            rotate_rand = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), Random.Range(-3, 3)); m_delta_cnt = 0;
+            m_delta_cnt = 0;
+        }
+
+        m_root.transform.GetChild(0).Rotate(rotate_rand);
+
+    }
+
+    public override void trigger_enter(Collider col)
+    { 
+        if(col.tag =="bullet")
+        {
+            for (int i = 0; i < 1 + m_level; i++)
+            {
+                float rand = Random.Range(0, 360);
+                GameObject clone = Instantiate(bullet_src, new Vector3(m_root.transform.position.x,2,m_root.transform.position.z) + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 7 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 7, Quaternion.identity) as GameObject;
+                clone.tag = "Untagged";
+                clone.GetComponent<SlantingBulletBehaviour>().power = m_ability_power[0];
+                clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 30 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 30;
+            }
+        }
+    }
+
+    public override void upgrade()
+    {
+        switch (m_level)
+        {
+            case 0:
+                m_ability_power[1] = 40;
+                m_upgrade_cost = 50;
+                break;
+            case 1:
+                m_ability_power[1] = 60;
+                m_upgrade_cost = 100;
+                break;
+            case 2:
+                m_ability_power[1] = 80;
+                m_upgrade_cost = 150;
+                break;
+            case 3:
+                break;
+        }
+        if (m_upgrade_text.Count > 0)
+            m_upgrade_text.Clear();
+        m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
+        m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
+    }
+
 }

@@ -35,7 +35,7 @@ public class SlantingBulletBehaviour : MonoBehaviour {
             ExecuteEvents.Execute<IRecieveMessage>(
                             target: col.collider.gameObject,
                             eventData: null,
-                            functor: (recievetarget, y) => recievetarget.OnRecieve(PlayerBehaviour.power)
+                            functor: (recievetarget, y) => recievetarget.OnRecieve(power)
                             );
         }
     }
