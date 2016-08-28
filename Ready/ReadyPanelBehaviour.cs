@@ -8,9 +8,9 @@ public class ReadyPanelBehaviour : MonoBehaviour {
     public static GameObject root;
     public GameObject ClickObj;
     public GameObject UpgradePanel;
-    GameObject[] obj_clone = new GameObject[7];
+    GameObject[] obj_clone = new GameObject[8];
 
-    ClickObjClass[] objclass = new ClickObjClass[7];
+    ClickObjClass[] objclass = new ClickObjClass[8];
 
 	void Start ()
     {
@@ -23,6 +23,8 @@ public class ReadyPanelBehaviour : MonoBehaviour {
         objclass[4] = new BuildSlatingShot();
         objclass[5] = new BuildStop();
         objclass[6] = new BuildSlantingBomb();
+        objclass[7] = new BuildResponceShot();
+
     }
 	
 	void Update () {
@@ -81,6 +83,7 @@ public class ReadyPanelBehaviour : MonoBehaviour {
         CreateObj(new Vector3(-320, 720, 0), 4);
         CreateObj(new Vector3(-320, 620, 0), 5);
         CreateObj(new Vector3(-320, 520, 0), 6);
+        CreateObj(new Vector3(-320, 420, 0), 7);
     }
 
     public void Click_Upgrade()

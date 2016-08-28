@@ -148,12 +148,30 @@ public class BuildSlantingBomb:ClickObjClass
         m_cost = 30;
         m_explain = "7秒毎に斜め4方向に爆弾を発射する";
         m_building = Resources.Load<GameObject>("Building/SlantingBombBuilding");
-        m_height = 4;
+        m_height = 3;
     }
 
     public override void Clicked()
     {
         base.Clicked();
         m_cost = m_cost + 30;
+    }
+}
+
+public class BuildResponceShot:ClickObjClass
+{
+    public BuildResponceShot()
+    {
+        m_title = "反応撃ち";
+        m_cost = 50;
+        m_explain = "これに弾が当たるとランダムな方向に新たな弾が出る";
+        m_building = Resources.Load<GameObject>("Building/ResponceShotBuilding");
+        m_height = 3;
+    }
+
+    public override void Clicked()
+    {
+        base.Clicked();
+        m_cost = m_cost + 30*m_buy_cnt;
     }
 }
