@@ -328,6 +328,7 @@ public class StopBuilding : BuildingClass
 public class SlantingBombBuilding : BuildingClass
 {
     GameObject bomb_src;
+    bool shot_flg;
 
     public SlantingBombBuilding()
     {
@@ -336,19 +337,28 @@ public class SlantingBombBuilding : BuildingClass
         m_action_rate[0] = 2;
         m_upgrade_cost = 50;
         bomb_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
+        shot_flg = false;
     }
 
     public override void ability(GameObject root)
     {
-        if (GameMasterBehaviour.interval_wall > 0.5f && GameMasterBehaviour.interval_wall < 0.52f)
+        if (GameMasterBehaviour.interval_wall > 0f && GameMasterBehaviour.interval_wall < 1f)
         {
+            if (shot_flg) return;
             for (int i = 0; i < 4; i++)
             {
                 GameObject clone = Instantiate(bomb_src, root.transform.position + root.transform.forward * ((i < 2) ? -2 : 2) + root.transform.right * ((i % 2 == 0) ? -2 : 2) + root.transform.up * 8, Quaternion.identity) as GameObject;
                 clone.GetComponent<Rigidbody>().velocity = root.transform.forward * ((i < 2) ? -7.8f : 7.8f) + root.transform.right * ((i % 2 == 0) ? -7.8f : 7.8f)+root.transform.up*15f;
                 clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
             }
+            shot_flg = true;
         }
+
+        if (GameMasterBehaviour.interval_wall > 3f && GameMasterBehaviour.interval_wall < 4f)
+        {
+            shot_flg = false;
+        }
+
     }
 
     public override void upgrade()
