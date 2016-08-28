@@ -91,7 +91,7 @@ public class BuildAutoGun:ClickObjClass
     {
         m_title = "自動銃";
         m_cost = 20;
-        m_explain = "2秒毎に範囲内の最も近い敵に30ダメージ";
+        m_explain = "2秒毎に範囲内の最も近い敵に20ダメージ";
         m_building = Resources.Load<GameObject>("Building/AutoGunBuilding");
         m_height = 3;
     }

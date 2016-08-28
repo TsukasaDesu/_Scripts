@@ -37,6 +37,7 @@ public class GameMasterBehaviour : MonoBehaviour {
         max_enemy_num[9] = 100;
         now_enmey_num = 0;
         ready_enemy_num = max_enemy_num[0];
+        ReadyPanel.transform.FindChild("NextWave").gameObject.GetComponent<Text>().text = "次:Wave" + wave;
 
         NextFlg = false;
     }
@@ -71,6 +72,7 @@ public class GameMasterBehaviour : MonoBehaviour {
         ready_enemy_num = max_enemy_num[wave];
         NextFlg = false;
         ReadyPanel.SetActive(true);
+        ReadyPanel.transform.FindChild("NextWave").gameObject.GetComponent<Text>().text = "次:Wave" + wave;
     }
 
 
