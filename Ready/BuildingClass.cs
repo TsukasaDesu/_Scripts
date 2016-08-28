@@ -125,7 +125,7 @@ public class AutoGunBuilding : BuildingClass
     {
         m_name = "自動銃";
         m_range[0] = 20;
-        m_ability_power[0] = 30;
+        m_ability_power[0] = 20;
         nearEnemys = new List<GameObject>();
         hiteffect = Resources.Load<GameObject>("Effect/HitEffect");
         m_upgrade_text = new List<string>();
@@ -175,19 +175,19 @@ public class AutoGunBuilding : BuildingClass
         {
             case 0:
                 m_action_rate[1] = 1.5f;
-                m_ability_power[1] = 50;
+                m_ability_power[1] = 25;
                 m_range[1] = 30;
                 m_upgrade_cost = 50;
                 break;
             case 1:
                 m_action_rate[1] = 1.0f;
-                m_ability_power[1] = 75;
+                m_ability_power[1] = 30;
                 m_range[1] = 40;
                 m_upgrade_cost = 100;
                 break;
             case 2:
                 m_action_rate[1] = 0.5f;
-                m_ability_power[1] = 100;
+                m_ability_power[1] = 35;
                 m_range[1] = 50;
                 m_upgrade_cost = 150;
                 break;
@@ -398,7 +398,7 @@ public class ResponceShotBuilding:BuildingClass
     public ResponceShotBuilding()
     {
         m_name = "反応撃ち";
-        m_ability_power[0] = 20;
+        m_ability_power[0] = 30;
         m_upgrade_cost = 50;
         bullet_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
         rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
@@ -436,15 +436,15 @@ public class ResponceShotBuilding:BuildingClass
         switch (m_level)
         {
             case 0:
-                m_ability_power[1] = 40;
+                m_ability_power[1] = 60;
                 m_upgrade_cost = 50;
                 break;
             case 1:
-                m_ability_power[1] = 60;
+                m_ability_power[1] = 90;
                 m_upgrade_cost = 100;
                 break;
             case 2:
-                m_ability_power[1] = 80;
+                m_ability_power[1] = 120;
                 m_upgrade_cost = 150;
                 break;
             case 3:
