@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-public abstract class BuildingClass : MonoBehaviour {
+public abstract class BuildingClass : MonoBehaviour
+{
 
 
     public float m_delta_cnt;
@@ -51,12 +52,12 @@ public abstract class BuildingClass : MonoBehaviour {
 
     public virtual void upgrade()
     {
-   
+
     }
 
 }
 
-public class MoneyBuilding:BuildingClass
+public class MoneyBuilding : BuildingClass
 {
 
     public MoneyBuilding()
@@ -71,16 +72,16 @@ public class MoneyBuilding:BuildingClass
     {
         m_delta_cnt += Time.deltaTime;
 
-        if(m_delta_cnt >= m_action_rate[0])
+        if (m_delta_cnt >= m_action_rate[0])
         {
-            PlayerBehaviour.money+=m_ability_power[0];
+            PlayerBehaviour.money += m_ability_power[0];
             m_delta_cnt = 0;
         }
     }
 
     public override void upgrade()
     {
-        switch(m_level)
+        switch (m_level)
         {
             case 0:
                 m_ability_power[1] = 2;
@@ -101,16 +102,16 @@ public class MoneyBuilding:BuildingClass
 
                 break;
         }
-        if(m_upgrade_text.Count > 0)
-        m_upgrade_text.Clear();
+        if (m_upgrade_text.Count > 0)
+            m_upgrade_text.Clear();
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
-        m_upgrade_text.Add("お金:" + m_ability_power[0]+"円" + "→" + m_ability_power[1]+"円");
-        m_upgrade_text.Add("間隔:" + m_action_rate[0]+"秒" + "→" + m_action_rate[1]+"秒");
+        m_upgrade_text.Add("お金:" + m_ability_power[0] + "円" + "→" + m_ability_power[1] + "円");
+        m_upgrade_text.Add("間隔:" + m_action_rate[0] + "秒" + "→" + m_action_rate[1] + "秒");
     }
 
 }
 
-public class AutoGunBuilding:BuildingClass
+public class AutoGunBuilding : BuildingClass
 {
     List<GameObject> nearEnemys;
     GameObject nearestEnemy;
@@ -152,7 +153,7 @@ public class AutoGunBuilding:BuildingClass
 
     public override void trigger_enter(Collider col)
     {
-        if(col.tag == "Enemy")
+        if (col.tag == "Enemy")
         {
             nearEnemys.Add(col.gameObject);
         }
@@ -166,7 +167,7 @@ public class AutoGunBuilding:BuildingClass
 
     public override void upgrade()
     {
-        switch(m_level)
+        switch (m_level)
         {
             case 0:
                 m_action_rate[1] = 1.5f;
@@ -189,17 +190,17 @@ public class AutoGunBuilding:BuildingClass
             case 3:
                 break;
         }
-        if(m_upgrade_text.Count > 0)
+        if (m_upgrade_text.Count > 0)
             m_upgrade_text.Clear();
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
         m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
-        m_upgrade_text.Add("間隔:" + m_action_rate[0]+"秒" + "→" + m_action_rate[1]+"秒");
-        m_upgrade_text.Add("射程:"+m_range[0]+"m" + "→" +m_range[1]+"m");
+        m_upgrade_text.Add("間隔:" + m_action_rate[0] + "秒" + "→" + m_action_rate[1] + "秒");
+        m_upgrade_text.Add("射程:" + m_range[0] + "m" + "→" + m_range[1] + "m");
     }
 
 }
 
-public class SlantingShotBuilding:BuildingClass
+public class SlantingShotBuilding : BuildingClass
 {
     GameObject bullet_src;
     float cnt;
@@ -216,16 +217,16 @@ public class SlantingShotBuilding:BuildingClass
 
     public override void ability(GameObject root)
     {
-        root.transform.GetChild(0).Rotate(0, m_level*5+1, 0);
+        root.transform.GetChild(0).Rotate(0, m_level * 5 + 1, 0);
         m_delta_cnt += Time.deltaTime;
-        if(m_delta_cnt > m_action_rate[0])
+        if (m_delta_cnt > m_action_rate[0])
         {
             for (int i = 0; i < m_level + 1; i++)
             {
-                GameObject bul = Instantiate(bullet_src, root.transform.position+root.transform.right*Mathf.Sin(Mathf.Deg2Rad*i*90)*2+root.transform.forward* Mathf.Cos(Mathf.Deg2Rad * i * 90)*2, Quaternion.identity) as GameObject;
+                GameObject bul = Instantiate(bullet_src, root.transform.position + root.transform.right * Mathf.Sin(Mathf.Deg2Rad * i * 90) * 2 + root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * i * 90) * 2, Quaternion.identity) as GameObject;
                 bul.GetComponent<SlantingBulletBehaviour>().power = m_ability_power[0];
                 bul.transform.parent = root.transform;
-                bul.GetComponent<Rigidbody>().velocity = root.transform.right * Mathf.Sin(Mathf.Deg2Rad * (cnt+i*90)) *30 + root.transform.forward*Mathf.Cos(Mathf.Deg2Rad * (cnt + i*90)) *30 + root.transform.up * -10;
+                bul.GetComponent<Rigidbody>().velocity = root.transform.right * Mathf.Sin(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * (cnt + i * 90)) * 30 + root.transform.up * -10;
                 cnt++;
             }
             m_delta_cnt = 0;
@@ -262,46 +263,41 @@ public class SlantingShotBuilding:BuildingClass
     }
 }
 
-public class StopBuilding:BuildingClass
+public class StopBuilding : BuildingClass
 {
-     
+
     public StopBuilding()
     {
         m_name = "通行止め";
         m_action_rate[0] = 6.84f;
         m_upgrade_cost = 50;
         m_delta_cnt = 0;
-        
+
     }
 
     public override void ability(GameObject root)
     {
         if (GameMasterBehaviour.interval_wall > 3 && GameMasterBehaviour.interval_wall < 4f)
         {
-            Debug.Log(root.transform.GetChild(0).position.y);
             if (root.transform.GetChild(0).localPosition.y > 0)
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).Translate(root.transform.up*-2,Space.World);
+                    root.transform.GetChild(i).Translate(root.transform.up * -2, Space.World);
             else
-                for (int i = 0; i <4;i++)
+                for (int i = 0; i < 4; i++)
                     root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 0, root.transform.GetChild(i).localPosition.z);
 
         }
-            if (GameMasterBehaviour.interval_wall >= m_action_rate[0])
+        if (GameMasterBehaviour.interval_wall >= m_action_rate[0])
         {
             if (root.transform.GetChild(0).localPosition.y < 1)
                 for (int i = 0; i < 4; i++)
-                    root.transform.GetChild(i).Translate(root.transform.up*2,Space.World);
+                    root.transform.GetChild(i).Translate(root.transform.up * 2, Space.World);
             else
-                for (int i = 0; i < 4;i++)
+                for (int i = 0; i < 4; i++)
                     root.transform.GetChild(i).localPosition = new Vector3(root.transform.GetChild(i).localPosition.x, 1, root.transform.GetChild(i).localPosition.z);
         }
     }
 
-    public override void trigger_enter(Collider col)
-    {
-
-    }
 
     public override void upgrade()
     {
@@ -326,5 +322,57 @@ public class StopBuilding:BuildingClass
             m_upgrade_text.Clear();
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
         m_upgrade_text.Add("間隔:" + m_action_rate[0] + "秒" + "→" + m_action_rate[1] + "秒");
+    }
+}
+
+public class SlantingBombBuilding : BuildingClass
+{
+    GameObject bomb_src;
+
+    public SlantingBombBuilding()
+    {
+        m_name = "斜め爆弾";
+        m_ability_power[0] = 50;
+        m_action_rate[0] = 2;
+        m_upgrade_cost = 50;
+        bomb_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
+    }
+
+    public override void ability(GameObject root)
+    {
+        if (GameMasterBehaviour.interval_wall > 0.5f && GameMasterBehaviour.interval_wall < 0.52f)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                GameObject clone = Instantiate(bomb_src, root.transform.position + root.transform.forward * ((i < 2) ? -2 : 2) + root.transform.right * ((i % 2 == 0) ? -2 : 2) + root.transform.up * 8, Quaternion.identity) as GameObject;
+                clone.GetComponent<Rigidbody>().velocity = root.transform.forward * ((i < 2) ? -7.8f : 7.8f) + root.transform.right * ((i % 2 == 0) ? -7.8f : 7.8f)+root.transform.up*15f;
+                clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
+            }
+        }
+    }
+
+    public override void upgrade()
+    {
+        switch (m_level)
+        {
+            case 0:
+                m_ability_power[1] = 75;
+                m_upgrade_cost = 50;
+                break;
+            case 1:
+                m_ability_power[1] = 100;
+                m_upgrade_cost = 100;
+                break;
+            case 2:
+                m_ability_power[1] = 125;
+                m_upgrade_cost = 150;
+                break;
+            case 3:
+                break;
+        }
+        if (m_upgrade_text.Count > 0)
+            m_upgrade_text.Clear();
+        m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
+        m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
     }
 }

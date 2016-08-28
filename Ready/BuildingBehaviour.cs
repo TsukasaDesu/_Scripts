@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BuildingBehaviour : MonoBehaviour {
 
-    public enum Builiding {Money,AutoGun,SlantingShot,Stop};
+    public enum Builiding {Money,AutoGun,SlantingShot,Stop,SlantingBomb};
     public Builiding building;
 
 
@@ -24,6 +24,9 @@ public class BuildingBehaviour : MonoBehaviour {
                 break;
             case Builiding.Stop:
                 building_class = new StopBuilding();
+                break;
+            case Builiding.SlantingBomb:
+                building_class = new SlantingBombBuilding();
                 break;
         }
         
