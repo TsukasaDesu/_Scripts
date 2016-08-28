@@ -31,6 +31,15 @@ public abstract class EnemyClass : MonoBehaviour {
     public void Init(GameObject root)
     {
         //m_body = root.transform.FindChild("body").gameObject;
+        if (Random.Range(0, 10) < 1)
+        {
+            float rand = Random.Range(1.5f, 3);
+            m_hp *= rand;
+            m_speed *= (rand/1.5f <= 1)?1:rand/1.5f;
+            root.transform.localScale *= rand;
+            Debug.Log(root.transform.name +":"+ m_speed +":"+ rand/1.5f);
+        }
+
         m_hp = m_hp_max[GameMasterBehaviour.wave];
         m_nav = root.GetComponent<NavMeshAgent>();
         m_nav.speed = m_speed;
@@ -76,7 +85,7 @@ public class Small:EnemyClass
     public Small()
     {
         m_hp = 50;
-        m_speed = 30;
+        m_speed = 20;
 
         m_hp_max[0] = 50;
         m_hp_max[1] = 80;

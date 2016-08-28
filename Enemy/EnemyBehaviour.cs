@@ -8,7 +8,7 @@ public class EnemyBehaviour : MonoBehaviour,IRecieveMessage {
     public enum Type { Normal,Big,Small};
     public Type type;
     public bool moveflg;
-    EnemyClass enemyclass;
+    public EnemyClass enemyclass;
     float cnt;
     GameObject hp_gage;
 
