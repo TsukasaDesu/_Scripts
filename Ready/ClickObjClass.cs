@@ -18,6 +18,7 @@ public abstract class ClickObjClass : MonoBehaviour {
         m_buy_cnt = 0;
         m_height = 0;
         m_building = null;
+       
     }
 
     
