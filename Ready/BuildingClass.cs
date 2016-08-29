@@ -274,7 +274,7 @@ public class StopBuilding : BuildingClass
     {
         m_name = "通行止め";
         m_action_rate[0] = 6.84f;
-        m_upgrade_cost = 50;
+        m_upgrade_cost = 0;
         m_delta_cnt = 0;
 
     }
@@ -305,27 +305,6 @@ public class StopBuilding : BuildingClass
 
     public override void upgrade()
     {
-        switch (m_level)
-        {
-            case 0:
-                m_action_rate[1] = 7f;
-                m_upgrade_cost = 50;
-                break;
-            case 1:
-                m_action_rate[1] = 5.0f;
-                m_upgrade_cost = 100;
-                break;
-            case 2:
-                m_action_rate[1] = 3f;
-                m_upgrade_cost = 150;
-                break;
-            case 3:
-                break;
-        }
-        if (m_upgrade_text.Count > 0)
-            m_upgrade_text.Clear();
-        m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
-        m_upgrade_text.Add("間隔:" + m_action_rate[0] + "秒" + "→" + m_action_rate[1] + "秒");
     }
 }
 
@@ -395,6 +374,9 @@ public class ResponceShotBuilding:BuildingClass
 {
     GameObject bullet_src;
     Vector3 rotate_rand;
+    bool coolflg;
+    bool hitflg;
+    int fire_cnt;
     public ResponceShotBuilding()
     {
         m_name = "反応撃ち";
@@ -402,18 +384,45 @@ public class ResponceShotBuilding:BuildingClass
         m_upgrade_cost = 50;
         bullet_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
         rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
+        coolflg = false;
+        fire_cnt = -1;
     }
 
     public override void ability()
     {
-        m_delta_cnt += Time.deltaTime;
-        if (m_delta_cnt > 4)
+
+        if (fire_cnt >= 0)
         {
-            rotate_rand = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), Random.Range(-3, 3)); m_delta_cnt = 0;
-            m_delta_cnt = 0;
+            float rand = Random.Range(0, 360);
+            GameObject clone = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 2 + m_root.transform.up * 7, Quaternion.identity) as GameObject;
+            clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
+            clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * Random.Range(10, 30) + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * Random.Range(10, 30) + m_root.transform.up * Random.Range(10, 30);
+            fire_cnt++;
+            if (fire_cnt > 100 + 20 * m_level)
+            {
+                fire_cnt = -1;
+                m_delta_cnt = 0;
+                hitflg = false;
+            }
         }
 
-        m_root.transform.GetChild(0).Rotate(rotate_rand);
+        if(fire_cnt != -1) return;
+
+        if (!hitflg)
+        m_delta_cnt += Time.deltaTime;
+        //rotate_rand = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), Random.Range(-3, 3)); m_delta_cnt = 0;
+
+        if (m_delta_cnt >= 10 && hitflg)
+        {
+            fire_cnt = 0;
+        }
+
+        foreach(Transform r in m_root.transform.GetChild(2))
+        {
+            r.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0.5f, 0.5f - m_delta_cnt / 20, 0.5f - m_delta_cnt / 20));
+        }
+        m_root.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0.5f, 0.5f - m_delta_cnt / 20, 0.5f - m_delta_cnt / 20));
+        m_root.transform.GetChild(0).Rotate(0,0,m_delta_cnt*1.5f);
 
     }
 
@@ -421,13 +430,8 @@ public class ResponceShotBuilding:BuildingClass
     { 
         if(col.tag =="bullet")
         {
-            for (int i = 0; i < 1 + m_level; i++)
-            {
-                float rand = Random.Range(0, 360);
-                GameObject clone = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 2+m_root.transform.up*7, Quaternion.identity) as GameObject;
-                clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
-                clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * Random.Range(10,30) + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * Random.Range(10,30)+m_root.transform.up*Random.Range(10,30);
-            }
+            if(m_delta_cnt >= 10)
+                hitflg = true;
         }
     }
 
