@@ -69,6 +69,7 @@ public class GameMasterBehaviour : MonoBehaviour {
 
         if (now_enmey_num != 0 || ready_enemy_num != 0) return;
         wave++;
+        ApplyPoint.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
         ready_enemy_num = max_enemy_num[wave];
         NextFlg = false;
         ReadyPanel.SetActive(true);
