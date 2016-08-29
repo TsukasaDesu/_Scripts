@@ -377,15 +377,17 @@ public class ResponceShotBuilding:BuildingClass
     bool coolflg;
     bool hitflg;
     int fire_cnt;
+    float local_scale;
     public ResponceShotBuilding()
     {
         m_name = "反応撃ち";
         m_ability_power[0] = 30;
         m_upgrade_cost = 50;
-        bullet_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
+        bullet_src = Resources.Load<GameObject>("Bullet/ResponceBomb");
         rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
         coolflg = false;
         fire_cnt = -1;
+        local_scale = 3;
     }
 
     public override void ability()
@@ -394,7 +396,7 @@ public class ResponceShotBuilding:BuildingClass
         if (fire_cnt >= 0)
         {
             float rand = Random.Range(0, 360);
-            GameObject clone = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 2 + m_root.transform.up * 7, Quaternion.identity) as GameObject;
+            GameObject clone = Instantiate(bullet_src, m_root.transform.position + m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * 2 + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * 2 + m_root.transform.up * 8, Quaternion.identity) as GameObject;
             clone.GetComponent<SlantingBombBehaviour>().power = m_ability_power[0];
             clone.GetComponent<Rigidbody>().velocity = m_root.transform.right * Mathf.Sin(Mathf.Deg2Rad * rand) * Random.Range(10, 30) + m_root.transform.forward * Mathf.Cos(Mathf.Deg2Rad * rand) * Random.Range(10, 30) + m_root.transform.up * Random.Range(10, 30);
             fire_cnt++;
@@ -410,8 +412,7 @@ public class ResponceShotBuilding:BuildingClass
 
         if (!hitflg)
         m_delta_cnt += Time.deltaTime;
-        //rotate_rand = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), Random.Range(-3, 3)); m_delta_cnt = 0;
-
+    
         if (m_delta_cnt >= 10 && hitflg)
         {
             fire_cnt = 0;
@@ -422,8 +423,10 @@ public class ResponceShotBuilding:BuildingClass
             r.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0.5f, 0.5f - m_delta_cnt / 20, 0.5f - m_delta_cnt / 20));
         }
         m_root.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0.5f, 0.5f - m_delta_cnt / 20, 0.5f - m_delta_cnt / 20));
-        m_root.transform.GetChild(0).Rotate(0,0,m_delta_cnt*1.5f);
-
+        m_root.transform.GetChild(0).Rotate(0,m_delta_cnt*2f,0,Space.World);
+        local_scale = 3 + m_delta_cnt / 5;
+        local_scale = Mathf.Clamp(local_scale, 3, 5);
+        m_root.transform.GetChild(0).localScale = new Vector3(local_scale,local_scale,local_scale); ;
     }
 
     public override void trigger_enter(Collider col)
