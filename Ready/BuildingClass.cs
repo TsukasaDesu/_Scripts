@@ -103,7 +103,7 @@ public class MoneyBuilding : BuildingClass
                 m_upgrade_cost = 200;
                 break;
             case 3:
-                m_upgrade_cost = 0;
+
                 break;
         }
         if (m_upgrade_text.Count > 0)
@@ -192,7 +192,6 @@ public class AutoGunBuilding : BuildingClass
                 m_upgrade_cost = 150;
                 break;
             case 3:
-                m_upgrade_cost = 0;
                 break;
         }
         if (m_upgrade_text.Count > 0)
@@ -213,7 +212,7 @@ public class SlantingShotBuilding : BuildingClass
     public SlantingShotBuilding()
     {
         m_name = "斜め撃ち";
-        m_ability_power[0] = 50;
+        m_ability_power[0] = 30;
         m_action_rate[0] = 2;
         m_upgrade_cost = 50;
         bullet_src = Resources.Load<GameObject>("Bullet/SlantingBullet");
@@ -244,21 +243,20 @@ public class SlantingShotBuilding : BuildingClass
         {
             case 0:
                 m_action_rate[1] = 1.5f;
-                m_ability_power[1] = 75;
+                m_ability_power[1] = 50;
                 m_upgrade_cost = 50;
                 break;
             case 1:
                 m_action_rate[1] = 1.0f;
-                m_ability_power[1] = 100;
+                m_ability_power[1] = 75;
                 m_upgrade_cost = 100;
                 break;
             case 2:
                 m_action_rate[1] = 0.5f;
-                m_ability_power[1] = 125;
+                m_ability_power[1] = 100;
                 m_upgrade_cost = 150;
                 break;
             case 3:
-                m_upgrade_cost = 0;
                 break;
         }
         if (m_upgrade_text.Count > 0)
@@ -318,7 +316,7 @@ public class SlantingBombBuilding : BuildingClass
     public SlantingBombBuilding()
     {
         m_name = "斜め爆弾";
-        m_ability_power[0] = 75;
+        m_ability_power[0] = 50;
         m_action_rate[0] = 2;
         m_upgrade_cost = 50;
         bomb_src = Resources.Load<GameObject>("Bullet/SlantingBomb");
@@ -351,19 +349,18 @@ public class SlantingBombBuilding : BuildingClass
         switch (m_level)
         {
             case 0:
-                m_ability_power[1] = 100;
+                m_ability_power[1] = 75;
                 m_upgrade_cost = 50;
                 break;
             case 1:
-                m_ability_power[1] = 125;
+                m_ability_power[1] = 100;
                 m_upgrade_cost = 100;
                 break;
             case 2:
-                m_ability_power[1] = 150;
+                m_ability_power[1] = 125;
                 m_upgrade_cost = 150;
                 break;
             case 3:
-                m_upgrade_cost = 0;
                 break;
         }
         if (m_upgrade_text.Count > 0)
@@ -458,7 +455,6 @@ public class ResponceShotBuilding:BuildingClass
                 m_upgrade_cost = 150;
                 break;
             case 3:
-                m_upgrade_cost = 0;
                 break;
         }
         if (m_upgrade_text.Count > 0)

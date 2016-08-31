@@ -76,10 +76,9 @@ public class UpgradeBehaviour : MonoBehaviour {
     public void Click_Upgrade()
     {
         if (PlayerBehaviour.money < building_class.m_upgrade_cost) return;
-        
+
         PlayerBehaviour.money -= building_class.m_upgrade_cost;
 
-        if(building_class.m_level < 3)
         building_class.m_level++;
         building_class.m_ability_power[0] = building_class.m_ability_power[1];
         building_class.m_action_rate[0] = building_class.m_action_rate[1];

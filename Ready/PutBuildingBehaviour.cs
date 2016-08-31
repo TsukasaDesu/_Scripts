@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class PutBuildingBehaviour : MonoBehaviour
 {
 
     public GameObject CanPutPanel;
     public GameObject CanPutBox;
-    public ClickObjClass clickobj_class;
     public GameObject Building;
     GameObject canputbox;
     GameObject canputpanel;
@@ -19,35 +17,30 @@ public class PutBuildingBehaviour : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (wait_time > 0)
-        //{
-        //    wait_time += Time.deltaTime;
-        //    if (wait_time > 2)
-        //    {
-        //       ReadyPanelBehaviour.root.SetActive(true);
-        //        wait_time = 0;
-        //    }
-        //}
+        if (wait_time > 0)
+        {
+            wait_time += Time.deltaTime;
+            if (wait_time > 2)
+            {
+                ReadyPanelBehaviour.root.SetActive(true);
+                wait_time = 0;
+            }
+        }
         if (ReadyPanelBehaviour.root.activeSelf && GameMasterBehaviour.NextFlg) return;
-
-        transform.GetChild(0).gameObject.GetComponent<Text>().text = "設置する建物:"+clickobj_class.m_title;
-        transform.GetChild(1).gameObject.GetComponent<Text>().text = "費用:" + clickobj_class.m_cost;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
 
         
 
-        if (Physics.Raycast(ray, out hit,1000))
+        if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log(hit.collider.gameObject);
-            Debug.DrawRay(ray.origin, ray.direction, Color.red, 10.0f);
             GameObject obj = hit.collider.gameObject;
 
             if (hit.collider.tag == "CanPutPanel")
@@ -63,26 +56,19 @@ public class PutBuildingBehaviour : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (hit.collider.tag != "CanPutBox" || PlayerBehaviour.money < clickobj_class.m_cost) return;
-                clickobj_class.Clicked();
+                if (hit.collider.tag != "CanPutBox") return;
+
                 put_box[point[0], point[1]] = 1;
                 Instantiate(Building,new Vector3(canputbox.transform.position.x,building_height,canputbox.transform.position.z), Quaternion.identity);
-                //Destroy(canputpanel);
+                Destroy(canputpanel);
                 Destroy(canputbox);
 
-                //for(int i = 0; i < gameObject.transform.childCount;i++)
-                 //   Destroy(gameObject.transform.GetChild(i).gameObject);
+                for(int i = 0; i < gameObject.transform.childCount;i++)
+                    Destroy(gameObject.transform.GetChild(i).gameObject);
 
-                //wait_time = 1;
+                wait_time = 1;
             }
         }
-    }
-
-    public void OnClick_Back()
-    {
-        if (canputbox != null) Destroy(canputbox);
-        gameObject.SetActive(false);
-        transform.parent.GetChild(1).gameObject.SetActive(true);
     }
 
     public void InitCanPanel()
