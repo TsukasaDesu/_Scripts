@@ -165,7 +165,7 @@ public class BuildResponceShot:ClickObjClass
     {
         m_title = "反応爆弾";
         m_cost = 50;
-        m_explain = "これに弾が当たるとランダムな方向に爆弾が出る";
+        m_explain = "10秒間に一度弾があたると噴火する";
         m_building = Resources.Load<GameObject>("Building/ResponceShotBuilding");
         m_height = 3;
     }
