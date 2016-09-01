@@ -61,7 +61,7 @@ public class PowerUP:ClickObjClass
     public override void Clicked()
     {
         base.Clicked();
-        m_cost = 20 + m_buy_cnt * 10;
+        m_cost += 20 + m_buy_cnt * 10;
         PlayerBehaviour.power += 10;
         m_explain = "攻撃力:" + PlayerBehaviour.power + "→" + (PlayerBehaviour.power + 10);
     }

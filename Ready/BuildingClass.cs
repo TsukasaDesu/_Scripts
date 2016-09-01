@@ -369,7 +369,7 @@ public class SlantingBombBuilding : BuildingClass
         if (m_upgrade_text.Count > 0)
             m_upgrade_text.Clear();
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
-        m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
+        m_upgrade_text.Add("攻撃力:" + m_ability_power[0]*2 + "→" + m_ability_power[1]*2);
     }
 }
 
@@ -385,7 +385,7 @@ public class ResponceShotBuilding:BuildingClass
     {
         m_name = "反応撃ち";
         m_ability_power[0] = 30;
-        m_upgrade_cost = 50;
+        m_upgrade_cost = 1000;
         bullet_src = Resources.Load<GameObject>("Bullet/ResponceBomb");
         rotate_rand = new Vector3(Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
         coolflg = false;
@@ -447,14 +447,14 @@ public class ResponceShotBuilding:BuildingClass
         {
             case 0:
                 m_ability_power[1] = 60;
-                m_upgrade_cost = 50;
+                m_upgrade_cost = 500;
                 break;
             case 1:
-                m_ability_power[1] = 90;
-                m_upgrade_cost = 100;
+                m_ability_power[1] = 100;
+                m_upgrade_cost = 1000;
                 break;
             case 2:
-                m_ability_power[1] = 120;
+                m_ability_power[1] = 240;
                 m_upgrade_cost = 150;
                 break;
             case 3:
@@ -464,7 +464,7 @@ public class ResponceShotBuilding:BuildingClass
         if (m_upgrade_text.Count > 0)
             m_upgrade_text.Clear();
         m_upgrade_text.Add("レベル:" + m_level + "→" + (m_level + 1));
-        m_upgrade_text.Add("攻撃力:" + m_ability_power[0] + "→" + m_ability_power[1]);
+        m_upgrade_text.Add("攻撃力:" + m_ability_power[0]*2 + "→" + m_ability_power[1]*2);
     }
 
 }

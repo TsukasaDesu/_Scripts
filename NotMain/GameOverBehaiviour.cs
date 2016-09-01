@@ -19,6 +19,6 @@ public class GameOverBehaiviour : MonoBehaviour {
 
     public void OnClick_Retry()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 }
