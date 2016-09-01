@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameMasterBehaviour : MonoBehaviour {
 
@@ -53,12 +54,14 @@ public class GameMasterBehaviour : MonoBehaviour {
         if (interval_wall > 7)
             interval_wall = 0;
 
+        if (wave >= 9) SceneManager.LoadScene(4);
+
         if (!NextFlg) return;
 
         if (ready_enemy_num > 0)
         {
             apply_cnt += Time.deltaTime;
-            if (apply_cnt > 0.3f)
+            if (apply_cnt > 1.2f-wave*0.1f)
             {
                 ready_enemy_num--;
                 now_enmey_num++;

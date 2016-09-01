@@ -20,6 +20,6 @@ public class GameClearBehaviour : MonoBehaviour {
 
     public void OnClick_Retry()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 }
